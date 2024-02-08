@@ -1,5 +1,5 @@
 name: kbmod
 version: ${project.version}
-main: live.slid.kbmod.kbmod
+main: live.skid.kbmod.kbmod
 authors: [DefineOutside]
 description: Knockback.
