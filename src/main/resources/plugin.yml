@@ -1,18 +1,5 @@
-name: LegacyKB
+name: kbmod
 version: ${project.version}
-main: org.abyssmc.legacykb.LegacyKB
+main: live.slid.kbmod.kbmod
 authors: [DefineOutside]
-description: A simple knockback plugin that works.
-commands:
-  legacykb:
-    description: /legacykb reload - to reload the plugin
-    permission: kohikb.reload
-permissions:
-  kohikb.reload:
-    description: /legacykb reload - to reload the plugin
-    default: op
-  legacykb.*:
-    description: Wildcard permission
-    default: op
-    children:
-      legacykb.reload: true
+description: Knockback.
