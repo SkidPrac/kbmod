@@ -37,7 +37,6 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
-        // Check if sword PvP, not PvE or EvE
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player && !event.isCancelled() && event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
             if (event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) {
                 return;
@@ -52,7 +51,6 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
 
             Player attacker = (Player) event.getDamager();
 
-            // Figure out base knockback direction
             double d0 = attacker.getLocation().getX() - victim.getLocation().getX();
             double d1 = attacker.getLocation().getZ() - victim.getLocation().getZ();
 
@@ -62,23 +60,18 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
 
             double magnitude = Math.sqrt(d0 * d0 + d1 * d1);
 
-            // Get player knockback taken before any friction applied
             Vector playerVelocity = victim.getVelocity();
 
-            // Calculate Vertical Friction
             playerVelocity.setX((playerVelocity.getX() / 2) - (knockbackHorizontalFriction * knockbackHorizontal));
             playerVelocity.setY((playerVelocity.getY() / 2) - (knockbackVerticalFriction * knockbackVertical));
             playerVelocity.setZ((playerVelocity.getZ() / 2) - (knockbackHorizontalFriction * knockbackHorizontal));
 
-            // Calculate bonus knockback for sprinting or knockback enchantment levels
             int i = attacker.getItemInHand().getEnchantmentLevel(Enchantment.KNOCKBACK);
             if (attacker.isSprinting()) ++i;
 
-            // Enforce knockback limit
             if (playerVelocity.getY() > knockbackVerticalLimit)
                 playerVelocity.setY(knockbackVerticalLimit);
 
-            // Apply bonus knockback
             if (i > 0)
                 playerVelocity.add(new Vector((-Math.sin(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
                         (float) i * knockbackExtraHorizontal), knockbackExtraVertical,
@@ -91,8 +84,6 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
-
-        // Hack around issue with knockback in wrong tick
         Bukkit.getScheduler().runTaskTimer(this, playerKnockbackHashMap::clear, 1, 1);
     }
 }
