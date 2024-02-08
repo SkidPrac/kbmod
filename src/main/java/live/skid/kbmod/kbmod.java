@@ -2,8 +2,6 @@ package live.skid.kbmod;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,11 +21,11 @@ import java.util.HashMap;
 public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
     double knockbackHorizontalFriction = 2.0D;
     double knockbackVerticalFriction = 2.0D;
-    double knockbackHorizontal = 0.4;
-    double knockbackVertical = 0.4;
-    double knockbackVerticalLimit = 0.4;
-    double knockbackExtraHorizontal = 0.5;
-    double knockbackExtraVertical = 0.1;
+    double knockbackHorizontal = 0.5D;
+    double knockbackVertical = 0.5D;
+    double knockbackVerticalLimit = 0.5;
+    double knockbackExtraHorizontal = 0.5D;
+    double knockbackExtraVertical = 0.1D;
     HashMap<Player, Vector> playerKnockbackHashMap = new HashMap<>();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -41,7 +39,7 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
         // Check if sword PvP, not PvE or EvE
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player && !event.isCancelled() && event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-            if (hasShields && event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) {
+            if (event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) {
                 return;
             }
 
@@ -69,7 +67,7 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
 
             // Calculate Vertical Friction
             playerVelocity.setX((playerVelocity.getX() / 2) - (knockbackHorizontalFriction * knockbackHorizontal));
-            playerVelocity.setY((playerVelocity.getY() / 2) - (knockbackVerticalFriction * knockbackVertical);
+            playerVelocity.setY((playerVelocity.getY() / 2) - (knockbackVerticalFriction * knockbackVertical));
             playerVelocity.setZ((playerVelocity.getZ() / 2) - (knockbackHorizontalFriction * knockbackHorizontal));
 
             // Calculate bonus knockback for sprinting or knockback enchantment levels
@@ -91,24 +89,10 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            reloadConfig();
-            getConfigValues();
-            sender.sendMessage(ChatColor.AQUA + "You have reloaded the config");
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
-
-        saveDefaultConfig();
-        getConfigValues();
 
         // Hack around issue with knockback in wrong tick
         Bukkit.getScheduler().runTaskTimer(this, playerKnockbackHashMap::clear, 1, 1);
     }
+}
