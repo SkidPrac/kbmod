@@ -1,5 +1,6 @@
 package live.skid.kbmod;
 
+import live.skid.kbmod.FastMath
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -55,10 +56,10 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
             double d1 = attacker.getLocation().getZ() - victim.getLocation().getZ();
 
             for (d1 = attacker.getLocation().getZ() - victim.getLocation().getZ();
-                 d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
-                d0 = (Math.random() - Math.random()) * 0.01D;
+                 d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (FastMath.random() - FastMath.random()) * 0.01D)
+                d0 = (FastMath.random() - FastMath.random()) * 0.01D;
 
-            double magnitude = Math.sqrt(d0 * d0 + d1 * d1);
+            double magnitude = FastMath.sqrt(d0 * d0 + d1 * d1);
 
             Vector playerVelocity = victim.getVelocity();
 
@@ -73,9 +74,9 @@ public class kbmod extends JavaPlugin implements Listener, CommandExecutor {
                 playerVelocity.setY(knockbackVerticalLimit);
 
             if (i > 0)
-                playerVelocity.add(new Vector((-Math.sin(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
+                playerVelocity.add(new Vector((-FastMath.sin(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
                         (float) i * knockbackExtraHorizontal), knockbackExtraVertical,
-                        Math.cos(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
+                        FastMath.cos(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
                                 (float) i * knockbackExtraHorizontal));
             playerKnockbackHashMap.put(victim, playerVelocity);
         }
