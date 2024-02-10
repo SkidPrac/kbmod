@@ -1,5 +1,5 @@
 name: kbmod
 version: ${project.version}
 main: live.skid.kbmod.kbmod
-authors: [DefineOutside]
+authors: [DefineOutside, Liseg, thenstop]
 description: Knockback.
